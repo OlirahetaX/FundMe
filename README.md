@@ -1,10 +1,41 @@
-# FundMe - Proyecto Blockchain con Ape
+# FundMe - Blockchain Crowdfunding Contract
 
-Proyecto de aprendizaje para interactuar con la blockchain usando Ape Framework, Chainlink Price Feeds y Anvil/Foundry para desarrollo local.
+A decentralized crowdfunding smart contract built with Solidity, using the Ape Framework for development and testing. This project integrates Chainlink Price Feeds to handle ETH/USD conversions and uses Anvil/Foundry for local blockchain development.
 
-## 🛠️ Instalación
+## 🎯 Features
 
-### 1. Instalar dependencias de Python
+- **Chainlink Price Feeds**: Real-time ETH/USD price conversion
+- **Minimum Funding**: Enforces a $50 USD minimum contribution in ETH
+- **Owner Controls**: Only the contract owner can withdraw funds
+- **Automated Testing**: Comprehensive test suite with pytest
+- **Mock Contracts**: Local development without real oracles
+- **Mainnet Fork Support**: Test with real mainnet data locally
+
+## 🛠️ Tech Stack
+
+- **Smart Contracts**: Solidity ^0.8.19
+- **Framework**: Ape (eth-ape)
+- **Local Blockchain**: Anvil (Foundry)
+- **Price Oracles**: Chainlink
+- **Testing**: pytest
+- **Networks**: Local, Sepolia Testnet, Mainnet Fork
+
+## 📋 Prerequisites
+
+- Python 3.8+
+- Node.js (optional, for some dependencies)
+- Git
+
+## 🚀 Installation
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/yourusername/fundme-ape.git
+cd fundme-ape
+```
+
+### 2. Install Python dependencies
 
 ```bash
 pip install eth-ape
@@ -13,154 +44,271 @@ pip install ape-foundry
 pip install python-dotenv
 ```
 
-### 2. Instalar Foundry (incluye Anvil)
+### 3. Install Foundry (includes Anvil)
 
 ```bash
 curl -L https://foundry.paradigm.xyz | bash
 foundryup
 ```
 
-### 3. Configurar variables de entorno
+### 4. Set up environment variables
 
-Crea un archivo `.env` en la raíz del proyecto:
+Create a `.env` file in the root directory:
 
 ```env
-ETHERSCAN_API_KEY=tu_api_key_aqui
+ETHERSCAN_API_KEY=your_api_key_here
 ```
 
-### 4. Compilar contratos
+### 5. Compile contracts
 
 ```bash
 ape compile
 ```
 
-## 🚀 Uso
+## 📁 Project Structure
 
-### Desarrollo Local con Anvil
+```
+fundme-ape/
+├── contracts/
+│   ├── FundMe.sol              # Main crowdfunding contract
+│   └── test/
+│       └── MockV3Aggregator.sol # Mock oracle for testing
+├── scripts/
+│   ├── deploy.py               # Deployment script
+│   ├── fund_And_withdraw.py    # Interaction script
+│   └── helpful_scripts.py      # Utility functions
+├── tests/
+│   └── test_fund_me.py         # Automated tests
+├── ape-config.yaml             # Ape configuration
+├── .env                        # Environment variables (create this)
+└── README.md
+```
 
-Anvil es más rápido que Hardhat y viene con Foundry. Es perfecto para desarrollo y testing.
+## 💻 Usage
 
-**Iniciar Anvil:**
+### Local Development with Anvil
+
+Anvil is faster than Hardhat and comes with Foundry - perfect for development and testing.
+
+**Start Anvil:**
 
 ```bash
 anvil
 ```
 
-En otra terminal, despliega el contrato:
+**In another terminal, deploy the contract:**
 
 ```bash
 ape run deploy --network ethereum:local:foundry
 ```
 
-**Funding y Withdraw:**
+**Fund and withdraw:**
 
 ```bash
 ape run fund_And_withdraw --network ethereum:local:foundry
 ```
 
-**Ejecutar tests:**
+**Run tests:**
 
 ```bash
 ape test --network ethereum:local:foundry
 ```
 
-### Despliegue en Sepolia
+### Mainnet Fork Testing
 
-**1. Crear cuenta en Ape:**
+Test with real mainnet data without spending real ETH:
+
+**Start Anvil with mainnet fork:**
 
 ```bash
-ape accounts import miCuenta
+anvil --fork-url https://eth-mainnet.g.alchemy.com/v2/YOUR_ALCHEMY_KEY
 ```
 
-Sigue las instrucciones y guarda tu private key de forma segura.
+**Deploy on fork:**
 
-**2. Desplegar:**
+```bash
+ape run deploy --network ethereum:mainnet-fork:foundry
+```
+
+### Deployment to Sepolia Testnet
+
+**1. Create an Ape account:**
+
+```bash
+ape accounts import myAccount
+```
+
+Follow the prompts and securely save your private key.
+
+**2. Get Sepolia ETH:**
+
+Use a faucet: https://sepoliafaucet.com/
+
+**3. Deploy:**
 
 ```bash
 ape run deploy --network ethereum:sepolia
 ```
 
-**3. Funding y Withdraw:**
+**4. Interact with the contract:**
 
 ```bash
 ape run fund_And_withdraw --network ethereum:sepolia
 ```
 
-## 📁 Estructura del Proyecto
+## 🧪 Testing
 
-```
-ape_fund_me/
-├── contracts/
-│   ├── FundMe.sol           # Contrato principal
-│   └── test/
-│       └── MockV3Aggregator.sol  # Mock para testing
-├── scripts/
-│   ├── deploy.py            # Script de despliegue
-│   ├── fund_And_withdraw.py # Interacción con el contrato
-│   └── helpful_scripts.py   # Utilidades
-├── tests/
-│   └── test_fund_me.py      # Tests automatizados
-├── ape-config.yaml          # Configuración de Ape
-└── .env                     # Variables de entorno
-```
-
-## 🔍 Características
-
-- **Chainlink Price Feeds**: Obtiene el precio de ETH/USD en tiempo real
-- **Mínimo de financiación**: 50 USD en ETH
-- **Owner Controls**: Solo el owner puede retirar fondos
-- **Testing automatizado**: Tests con pytest
-- **Mock Contracts**: Para desarrollo local sin necesidad de oráculos reales
-
-## 📝 Comandos Útiles
-
-### Testing
+### Run all tests
 
 ```bash
-# Ejecutar todos los tests
 ape test
+```
 
-# Ejecutar tests en verbose
+### Verbose output
+
+```bash
 ape test -v
+```
 
-# Ejecutar un test específico
+### Run specific test
+
+```bash
 ape test tests/test_fund_me.py::test_can_fund_and_withdraw
 ```
 
-### Console interactiva
+### Test coverage
 
 ```bash
-# Console local
-ape console --network ethereum:local:foundry
+ape test --coverage
+```
 
-# Console en Sepolia
+## 🔍 Key Functions
+
+### FundMe Contract
+
+- `fund()` - Send ETH to the contract (minimum $50 USD equivalent)
+- `withdraw()` - Owner-only function to withdraw all funds
+- `getEntranceFee()` - Calculate minimum ETH required for $50 USD
+- `getConversionRate(uint256 ethAmount)` - Convert ETH amount to USD
+- `getPrice()` - Get current ETH/USD price from Chainlink
+
+## 📊 Network Configuration
+
+The project supports multiple networks configured in `ape-config.yaml`:
+
+- **Local**: Development with Anvil/Foundry
+- **Sepolia**: Ethereum testnet
+- **Mainnet Fork**: Local fork of Ethereum mainnet
+
+Price feed addresses:
+- Sepolia: `0x694AA1769357215DE4FAC081bf1f309aDC325306`
+- Mainnet: `0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419`
+
+## 🎮 Interactive Console
+
+### Local console
+
+```bash
+ape console --network ethereum:local:foundry
+```
+
+### Sepolia console
+
+```bash
 ape console --network ethereum:sepolia
 ```
 
-### Ver información de la red
+### Example commands in console
+
+```python
+# Get deployed contract
+fund_me = project.FundMe.deployments[-1]
+
+# Check entrance fee
+entrance_fee = fund_me.getEntranceFee()
+print(f"Entrance fee: {entrance_fee / 1e18} ETH")
+
+# Fund the contract
+account = accounts.test_accounts[0]
+fund_me.fund(sender=account, value=entrance_fee)
+
+# Check balance
+balance = fund_me.addressToAmountFunded(account.address)
+print(f"Funded: {balance / 1e18} ETH")
+```
+
+## 🔗 Useful Commands
+
+### View available networks
 
 ```bash
 ape networks list
 ```
 
-## 🎯 Ventajas de Anvil vs Hardhat
+### View accounts
 
-1. **Velocidad**: Anvil es significativamente más rápido
-2. **Integración**: Parte del ecosistema Foundry
-3. **Forking**: Forkea mainnet/testnet fácilmente
-4. **Sin dependencias JS**: Todo en Rust
-5. **Mejor performance**: Menos consumo de recursos
+```bash
+ape accounts list
+```
 
-## 🔗 Resources
+### View deployments
 
-- [Ape Framework Docs](https://docs.apeworksuite.io/)
+```bash
+ape deployments list
+```
+
+## ⚡ Advantages of Anvil vs Hardhat
+
+1. **Speed**: Significantly faster transaction processing
+2. **Integration**: Part of the Foundry ecosystem
+3. **Forking**: Easy mainnet/testnet forking
+4. **No JS dependencies**: Built in Rust
+5. **Better performance**: Lower resource consumption
+6. **State management**: Advanced state manipulation features
+
+## 🔐 Security Notes
+
+- ⚠️ Never commit your `.env` file
+- 🔑 Store private keys securely (use Ape accounts, not raw keys)
+- 🧪 Always test on testnet before mainnet deployment
+- 💰 The contract requires minimum $50 USD in ETH to fund
+- 👤 Only the owner can withdraw funds
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+1. Fork the project
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## 📚 Resources
+
+- [Ape Framework Documentation](https://docs.apeworksuite.io/)
 - [Foundry Book](https://book.getfoundry.sh/)
 - [Chainlink Price Feeds](https://docs.chain.link/data-feeds/price-feeds/addresses)
 - [Sepolia Faucet](https://sepoliafaucet.com/)
+- [Solidity Documentation](https://docs.soliditylang.org/)
 
-## ⚠️ Notas Importantes
+## 📝 License
 
-- Nunca subas tu `.env` al repositorio
-- Guarda tus claves privadas de forma segura
-- En Sepolia, necesitas ETH de prueba (usa faucets)
-- El contrato requiere mínimo 50 USD en ETH para financiar
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## 👨‍💻 Author
+
+Your Name - [@yourtwitter](https://twitter.com/yourtwitter)
+
+Project Link: [https://github.com/yourusername/fundme-ape](https://github.com/yourusername/fundme-ape)
+
+## 🙏 Acknowledgments
+
+- Patrick Collins for the original FundMe concept
+- Chainlink for the decentralized oracle network
+- ApeWorX team for the amazing development framework
+- Foundry team for Anvil and the Foundry suite
+
+---
+
+⭐ If you found this project helpful, please give it a star!
