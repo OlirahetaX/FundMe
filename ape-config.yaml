@@ -12,20 +12,27 @@ solidity:
 
 dotenv: .env
 
-
-development:
-  verify: false
-
 plugins:
   - name: solidity
   - name: ethereum
+  - name: foundry
 
 default_ecosystem: ethereum
 
 ethereum:
+  local:
+    default_provider: foundry
   sepolia:
     default_provider: node
     verify: true
+
+foundry:
+  fork:
+    ethereum:
+      mainnet:
+        upstream_provider: node
+      sepolia:
+        upstream_provider: node
 
 node:
   ethereum:
@@ -35,4 +42,6 @@ node:
 etherscan:
   api_key: ${ETHERSCAN_API_KEY}
 
-
+test:
+  balance: 10000 ether
+  mnemonic: test test test test test test test test test test test junk
