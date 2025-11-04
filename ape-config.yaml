@@ -25,6 +25,10 @@ ethereum:
   sepolia:
     default_provider: node
     verify: true
+    eth_usd_price_feed: '0x694AA1769357215DE4FAC081bf1f309aDC325306'
+  mainnet-fork:
+    default_provider: foundry
+    eth_usd_price_feed: '0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419'
 
 foundry:
   fork:
@@ -37,7 +41,7 @@ foundry:
 node:
   ethereum:
     sepolia:
-      uri: https://sepolia.infura.io/v3/419c9a0447304db1ba6d16d0ebcfa10c
+      uri: https://mainnet.infura.io/v3/967864a8a40b40aca8384cf067734c7e
 
 etherscan:
   api_key: ${ETHERSCAN_API_KEY}

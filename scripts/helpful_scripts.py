@@ -10,8 +10,9 @@ PRICE_FEEDS = {
     "mainnet": "0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419",
 }
 
-LOCAL_BLOCKCHAIN_ENVIRONMENTS = ["local", "development", "anvil", "hardhat", "foundry", "mainnet-fork", "sepolia-fork"]
-    
+LOCAL_BLOCKCHAIN_ENVIRONMENTS = ["local", "development", "anvil", "hardhat", "foundry"]
+FORKED_LOCAL_ENVIROMENTS = ["mainnet-fork"]
+
 def get_Account():
     """
     Devuelve una cuenta de test para redes locales o la cuenta real para redes públicas.
@@ -20,7 +21,10 @@ def get_Account():
     provider_name = networks.active_provider.name.lower()
     
     # Si estamos en una red local o de desarrollo
-    if any(env in network_name or env in provider_name for env in LOCAL_BLOCKCHAIN_ENVIRONMENTS):
+    if (
+        any(env in network_name or env in provider_name for env in LOCAL_BLOCKCHAIN_ENVIRONMENTS) 
+        or any(env in network_name or env in provider_name for env in FORKED_LOCAL_ENVIROMENTS)
+    ):
         print(f"🔧 Using test account on {network_name}")
         return accounts.test_accounts[0]
     else:
