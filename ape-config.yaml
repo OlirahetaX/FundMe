@@ -1,0 +1,38 @@
+name: ape_fund_me
+
+dependencies:
+  - name: chainlink
+    github: smartcontractkit/chainlink-brownie-contracts
+    version: 1.1.1  # compatible con v0.8
+
+solidity:
+  version: 0.8.19
+  import_remapping:
+    - "@chainlink=chainlink"
+
+dotenv: .env
+
+
+development:
+  verify: false
+
+plugins:
+  - name: solidity
+  - name: ethereum
+
+default_ecosystem: ethereum
+
+ethereum:
+  sepolia:
+    default_provider: node
+    verify: true
+
+node:
+  ethereum:
+    sepolia:
+      uri: https://sepolia.infura.io/v3/419c9a0447304db1ba6d16d0ebcfa10c
+
+etherscan:
+  api_key: ${ETHERSCAN_API_KEY}
+
+
